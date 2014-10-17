@@ -8,9 +8,9 @@ public class User {
 
 	private String userName;
 
-	public Long getUserId() { return userId; }
+    public Long getUserId() { return userId; }
 
-	public void setUserId(Long userId){ this.userId = userId; }
+    public void setUserId(Long userId){ this.userId = userId; }
 
     public String getLogin() { return login; }
 
