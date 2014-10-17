@@ -1,5 +1,6 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
+<<<<<<< HEAD
   	<artifactId>app-core</artifactId>
 	<packaging>jar</packaging>
 
@@ -8,6 +9,12 @@
 		<artifactId>sampleusermanagement</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+=======
+	<groupId>com.epam.brest.courses</groupId>
+  	<artifactId>app-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+  	<packaging>jar</packaging>
+>>>>>>> 7bf55f6574c5fdc0b8ea87fb6dee90516aff053c
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,7 +24,12 @@
         	<dependency>
                 	<groupId>junit</groupId>
                         <artifactId>junit</artifactId>
+<<<<<<< HEAD
                         
+=======
+                        <version>4.11</version>
+                        <scope>test</scope>
+>>>>>>> 7bf55f6574c5fdc0b8ea87fb6dee90516aff053c
                 </dependency>
 	</dependencies>
 
