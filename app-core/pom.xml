@@ -1,25 +1,26 @@
 <project>
-	<modelVersion>4.0.0</modelVersion>
-  	<artifactId>app-core</artifactId>
-	<packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.epam.brest.courses</groupId>
-		<artifactId>sampleusermanagement</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <artifactId>app-core</artifactId>
+    <packaging>jar</packaging>
 
-	<dependencies>
-        	<dependency>
-                	<groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        
-                </dependency>
-	</dependencies>
+    <parent>
+        <groupId>com.epam.brest.courses</groupId>
+        <artifactId>sampleusermanagement</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>
