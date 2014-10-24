@@ -15,4 +15,8 @@ public interface UserDao {
 
     public void removeUser(Long userId);
 
+    public User getUserById(Long userId);
+
+    public User getUserByLogin(String login);
+
 }

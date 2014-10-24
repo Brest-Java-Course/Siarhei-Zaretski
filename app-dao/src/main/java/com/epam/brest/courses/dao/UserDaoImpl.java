@@ -33,6 +33,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserById(Long userId) {
+        return jdbcTemplate.queryForObject("select userid, login, name from USER where userid = ?",
+                new Object[]{userId}, new UserMapper());
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return jdbcTemplate.queryForObject("select userid, login, name from USER where login = ?",
+                new Object[]{login}, new UserMapper());
+    }
+
+    @Override
     public void removeUser(Long userId) {
         jdbcTemplate.update("delete from USER where userid = ?", userId);
     }

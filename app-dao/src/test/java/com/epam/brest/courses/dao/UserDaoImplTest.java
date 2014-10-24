@@ -51,4 +51,20 @@ public class UserDaoImplTest {
         users = userDao.getUsers();
         assertEquals(sizeBefore-1, users.size());
     }
+
+    @Test
+    public void getUserByLogin() {
+        User user = userDao.getUserByLogin("userLogin1");
+        assertNotNull(user);
+        assertTrue(user.getLogin().equals("userLogin1"));
+    }
+
+    @Test
+    public void getUserById() {
+        User user = userDao.getUserById(1L);
+        assertNotNull(user);
+        assertTrue(user.getUserId() == 1L);
+    }
+
+
 }
