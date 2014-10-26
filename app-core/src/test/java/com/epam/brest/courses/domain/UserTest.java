@@ -2,7 +2,6 @@ package com.epam.brest.courses.domain;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
 public class UserTest {
@@ -15,14 +14,14 @@ public class UserTest {
     }
 
     @Test
-    public void testGetUserName() throws Exception {
-        user.setUserName("UserName");
-        assertEquals("UserName", user.getUserName());
+    public void testGetName() throws Exception {
+        user.setName("User Name");
+        assertEquals("User Name", user.getName());
     }
 
     @Test
-     public void testGetLogin() throws Exception {
-        user.setLogin("UserLogin");
-        assertEquals("UserLogin", user.getLogin());
+    public void testGetLogin() throws Exception {
+        user.setLogin("User Login");
+        assertEquals("User Login", user.getLogin());
     }
 }

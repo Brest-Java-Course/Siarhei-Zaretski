@@ -6,15 +6,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import java.util.List;
-
 import static org.junit.Assert.*;
-
 
 /**
  * Created by sphincs on 22.10.14.
  */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/testApplicationContextSpring.xml"})
 public class UserDaoImplTest {
@@ -37,7 +35,7 @@ public class UserDaoImplTest {
         User user = new User();
         user.setUserId(3L);
         user.setLogin("userLogin3");
-        user.setUserName("userName3");
+        user.setName("userName3");
         userDao.addUser(user);
         users = userDao.getUsers();
         assertEquals(sizeBefore+1, users.size());
