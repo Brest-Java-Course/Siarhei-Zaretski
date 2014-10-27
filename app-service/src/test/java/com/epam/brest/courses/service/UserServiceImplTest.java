@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/testServiceApplicationContextSpring.xml" })
+@ContextConfiguration(locations = { "classpath*:/spring-services-test.xml" })
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
 @Transactional
 public class UserServiceImplTest {
