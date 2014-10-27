@@ -63,6 +63,4 @@ public class UserDaoImplTest {
         assertNotNull(user);
         assertTrue(user.getUserId() == 1L);
     }
-
-
 }
