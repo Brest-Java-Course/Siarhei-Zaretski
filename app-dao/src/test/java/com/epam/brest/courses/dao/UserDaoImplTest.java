@@ -33,7 +33,7 @@ public class UserDaoImplTest {
         int sizeBefore = users.size();
 
         User user = new User();
-        user.setUserId(3L);
+        //user.setUserId(3L);
         user.setLogin("userLogin3");
         user.setName("userName3");
         userDao.addUser(user);
@@ -45,7 +45,7 @@ public class UserDaoImplTest {
     public void removeUser() {
         List<User> users = userDao.getUsers();
         int sizeBefore = users.size();
-        userDao.removeUser(3L);
+        userDao.removeUser(1L);
         users = userDao.getUsers();
         assertEquals(sizeBefore-1, users.size());
     }
@@ -59,8 +59,8 @@ public class UserDaoImplTest {
 
     @Test
     public void getUserById() {
-        User user = userDao.getUserById(1L);
+        User user = userDao.getUserById(2L);
         assertNotNull(user);
-        assertTrue(user.getUserId() == 1L);
+        assertTrue(user.getUserId() == 2L);
     }
 }
