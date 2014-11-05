@@ -6,6 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.util.Assert;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
 
 /**
  * Created by sphincs on 20.10.14.
@@ -22,8 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) {
-        LOGGER.debug("addUser({}) ", user);
+    public Long addUser(User user) {
         Assert.notNull(user);
         Assert.isNull(user.getUserId());
         Assert.notNull(user.getLogin(), "User login should be specified.");
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
         if (existingUser != null) {
             throw new IllegalArgumentException("User is present in DB");
         }
-        userDao.addUser(user);
+        return userDao.addUser(user);
     }
 
     @Override
@@ -45,5 +47,25 @@ public class UserServiceImpl implements UserService {
              LOGGER.error("getUserByLogin({}) ", login);
         }
         return user;
+    }
+
+    @Override
+    public User getUserById(long userId) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public List<User> getUsers() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void updateUser(User user) {
+
+    }
+
+    @Override
+    public void removeUser(Long userId) {
+
     }
 }

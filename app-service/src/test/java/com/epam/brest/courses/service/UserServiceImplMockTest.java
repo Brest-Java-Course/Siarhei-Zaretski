@@ -2,6 +2,7 @@ package com.epam.brest.courses.service;
 
 import com.epam.brest.courses.dao.UserDao;
 import com.epam.brest.courses.domain.User;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,19 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.IllegalFormatException;
-import java.util.zip.DataFormatException;
-
+import static junit.framework.TestCase.assertNotNull;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-/**
- * Created by sphincs on 27.10.14.
- */
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/spring-services-mock-test.xml" })
-
+@ContextConfiguration(locations = {"classpath*:/spring-services-mock-test.xml"})
 public class UserServiceImplMockTest {
 
     @Autowired
@@ -39,21 +34,17 @@ public class UserServiceImplMockTest {
     public void addUser() {
         User user = UserDataFixture.getNewUser();
 
-        userDao.getUserByLogin(user.getLogin());
-        expectLastCall().andReturn(null);
 
-        userDao.addUser(user);
-        expectLastCall();
-
+        expect(userDao.addUser(user)).andReturn(Long.valueOf(1L));
+        expect(userDao.getUserByLogin(user.getLogin())).andReturn(null);
         replay(userDao);
 
-        userService.addUser(user);
-
-        verify(userDao);
+        Long id = userService.addUser(user);
+        assertEquals(id, Long.valueOf(1L));
 
     }
 
-    @Test
+    //Test
     public void addUser2() {
         User user = UserDataFixture.getNewUser();
 
@@ -63,14 +54,12 @@ public class UserServiceImplMockTest {
         userDao.getUserByLogin(user.getLogin());
         expectLastCall().andReturn(null).times(2);
 
-
         replay(userDao);
 
         userService.addUser(user);
         userService.addUser(user);
 
         verify(userDao);
-
     }
 
     @Test
@@ -79,9 +68,6 @@ public class UserServiceImplMockTest {
 
         expect(userDao.getUserByLogin(user.getLogin())).andReturn(user);
 
-/*      userDao.getUserByLogin(user.getLogin());
-        expectLastCall().andReturn(user);
-*/
         replay(userDao);
 
         User result = userService.getUserByLogin(user.getLogin());
@@ -89,7 +75,6 @@ public class UserServiceImplMockTest {
         verify(userDao);
 
         assertSame(user, result);
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -101,17 +86,16 @@ public class UserServiceImplMockTest {
         replay(userDao);
 
         userService.addUser(user);
-
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void addUserException() {
+    @Test(expected = UnsupportedOperationException.class)
+    public void throwException() {
         User user = UserDataFixture.getNewUser();
 
-        expect(userDao.getUserByLogin(user.getLogin())).andThrow(new IllegalArgumentException());
+        expect(userDao.getUserByLogin(user.getLogin())).andThrow(new UnsupportedOperationException());
 
         replay(userDao);
+
         userService.addUser(user);
     }
-
 }
