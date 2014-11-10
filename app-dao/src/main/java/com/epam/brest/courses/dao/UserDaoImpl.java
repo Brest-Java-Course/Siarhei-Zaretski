@@ -6,11 +6,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.util.Assert;
+
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,23 +26,30 @@ import java.util.Map;
 
 public class UserDaoImpl implements UserDao {
 
-    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${insert_into_user_path}')).file)}")
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${insert_into_user_path}')).inputStream)}")
     public String addNewUserSql;
-    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${delete_from_user_path}')).file)}")
-    public String deleteUserSql;
-    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${update_user_path}')).file)}")
+
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${delete_from_user_path}')).inputStream)}")
+    public String deleteFromUserSql;
+
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_user_path}')).inputStream)}")
     public String updateUserSql;
-    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${select_user_by_login_path}')).file)}")
-    public String selectUserByLoginSql;
-    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${select_all_users_path}')).file)}")
+
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_all_users_path}')).inputStream)}")
     public String selectAllUsersSql;
-    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${select_user_by_id_path}')).file)}")
+
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_user_by_id_path}')).inputStream)}")
     public String selectUserByIdSql;
+
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_user_by_login_path}')).inputStream)}")
+    public String selectUserByLoginSql;
+
     public static final String USER_ID = "userid";
     public static final String LOGIN = "login";
     public static final String NAME = "name";
 
     private static final Logger LOGGER = LogManager.getLogger();
+
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
@@ -46,6 +57,7 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
+
     @Override
     public Long addUser(User user) {
         LOGGER.debug("addUser({}) ", user);
@@ -53,46 +65,60 @@ public class UserDaoImpl implements UserDao {
         Assert.isNull(user.getUserId());
         Assert.notNull(user.getLogin(), "User login should be specified.");
         Assert.notNull(user.getName(), "User name should be specified.");
-        Map<String, Object> parameters = new HashMap(3);
-        parameters.put(NAME, user.getName());
-        parameters.put(LOGIN, user.getLogin());
-        parameters.put(USER_ID, user.getUserId());
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedJdbcTemplate.update(addNewUserSql, new MapSqlParameterSource(parameters), keyHolder);
-        return keyHolder.getKey().longValue();
+
+        KeyHolder keyholder = new GeneratedKeyHolder();
+
+        SqlParameterSource namedParameters;
+        namedParameters = new MapSqlParameterSource()
+                .addValue(NAME, user.getName())
+                .addValue(LOGIN, user.getLogin())
+                .addValue(USER_ID, user.getUserId());
+        namedJdbcTemplate.update(addNewUserSql, namedParameters, keyholder);
+        LOGGER.debug("addUser(): id{}",keyholder.getKey());
+
+        return  keyholder.getKey().longValue();
     }
+
     @Override
     public List<User> getUsers() {
         LOGGER.debug("get users()");
         return jdbcTemplate.query(selectAllUsersSql, new UserMapper());
     }
+
     @Override
     public void removeUser(Long userId) {
         LOGGER.debug("removeUser(userId={}) ", userId);
-        jdbcTemplate.update(deleteUserSql, userId);
+        jdbcTemplate.update(deleteFromUserSql, userId);
     }
+
     @Override
     public User getUserByLogin(String login) {
         LOGGER.debug("getUserByLogin(login={})", login);
         return jdbcTemplate.queryForObject(selectUserByLoginSql,
                 new String[]{login.toLowerCase()}, new UserMapper());
     }
+
     @Override
-    public User getUserById(long userId) {
+    public User getUserById(Long userId) {
         LOGGER.debug("getUserById(userId={})", userId);
         return jdbcTemplate.queryForObject(selectUserByIdSql,
                 new UserMapper(), userId);
     }
+
     @Override
     public void updateUser(User user) {
         LOGGER.debug("updateUser({}).. ", user);
+
         Map<String, Object> parameters = new HashMap(3);
         parameters.put(NAME, user.getName());
         parameters.put(LOGIN, user.getLogin());
         parameters.put(USER_ID, user.getUserId());
         namedJdbcTemplate.update(updateUserSql, parameters);
     }
+
+
     public class UserMapper implements RowMapper<User> {
+
         public User mapRow(ResultSet rs, int i) throws SQLException {
             User user = new User();
             user.setUserId(rs.getLong(USER_ID));

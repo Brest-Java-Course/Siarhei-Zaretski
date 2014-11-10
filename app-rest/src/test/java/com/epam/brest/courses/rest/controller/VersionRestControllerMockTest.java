@@ -49,5 +49,4 @@ public class VersionRestControllerMockTest {
                 .andExpect(content().string("\"1.0\""));
     }
 
-
 }
