@@ -6,6 +6,11 @@ import static org.junit.Assert.assertEquals;
 
 public class UserTest {
 
+    private static final Long USER_ID = 1L;
+    private static final String USER_LOGIN = "UserLogin";
+    private static final String USER_NAME = "UserName";
+
+
     User user;
 
     @Before
@@ -14,14 +19,28 @@ public class UserTest {
     }
 
     @Test
+    public void testCreateUserWithSameParameters() throws Exception{
+        User user = new User(USER_ID, USER_LOGIN, USER_NAME);
+        assertEquals(USER_ID, user.getUserId());
+        assertEquals(USER_LOGIN, user.getLogin());
+        assertEquals(USER_NAME, user.getName());
+    }
+
+    @Test
     public void testGetName() throws Exception {
-        user.setName("User Name");
-        assertEquals("User Name", user.getName());
+        user.setName(USER_NAME);
+        assertEquals(USER_NAME, user.getName());
     }
 
     @Test
     public void testGetLogin() throws Exception {
-        user.setLogin("User Login");
-        assertEquals("User Login", user.getLogin());
+        user.setLogin(USER_LOGIN);
+        assertEquals(USER_LOGIN, user.getLogin());
+    }
+
+    @Test
+    public void testGetUserId() throws Exception {
+        user.setUserId(USER_ID);
+        assertEquals(USER_ID, user.getUserId());
     }
 }
