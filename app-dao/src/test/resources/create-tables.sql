@@ -1,0 +1,16 @@
+CREATE TABLE BET (
+singlebetid BIGINT IDENTITY,
+betdate TIMESTAMP,
+clientname VARCHAR(255) NOT NULL,
+passport VARCHAR(255) NOT NULL,
+factor DOUBLE NOT NULL,
+betmoney BIGINT NOT NULL,
+marker TINYINT(1) NOT NULL,
+processed TINYINT(1) NOT NULL
+);
+CREATE TABLE RECEIPT (
+receiptid BIGINT IDENTITY,
+receiptdate TIMESTAMP
+inputmoney BIGINT NOT NULL,
+outputmoney BIGINT NOT NULL
+)
