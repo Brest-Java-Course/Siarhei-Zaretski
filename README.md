@@ -1,0 +1,1 @@
+Small programm for betting
